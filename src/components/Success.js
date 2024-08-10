@@ -18,7 +18,7 @@ const Success = () => (
       Wala lng nko ni nahuman daun hahahah
     </p>
     {/* Displaying the date of the special moment */}
-    <p className="App-text-date">{`Love ya <3`}</p>
+    <p className="App-text-date">{`Surprise! Love ya <3 :p`}</p>
   </div>
 );
 
