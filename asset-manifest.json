@@ -1,18 +1,18 @@
 {
   "files": {
     "main.css": "/monthsary-mini-program/static/css/main.887317f5.css",
-    "main.js": "/monthsary-mini-program/static/js/main.8d778935.js",
+    "main.js": "/monthsary-mini-program/static/js/main.f5301f5e.js",
     "static/js/592.0db8293a.chunk.js": "/monthsary-mini-program/static/js/592.0db8293a.chunk.js",
     "static/media/flowerBear.gif": "/monthsary-mini-program/static/media/flowerBear.7cb1db98af7339613d26.gif",
     "static/media/kisses.gif": "/monthsary-mini-program/static/media/kisses.419e28a9183f3abead95.gif",
     "static/media/madBear.gif": "/monthsary-mini-program/static/media/madBear.960144df23faee67bea0.gif",
     "index.html": "/monthsary-mini-program/index.html",
     "main.887317f5.css.map": "/monthsary-mini-program/static/css/main.887317f5.css.map",
-    "main.8d778935.js.map": "/monthsary-mini-program/static/js/main.8d778935.js.map",
+    "main.f5301f5e.js.map": "/monthsary-mini-program/static/js/main.f5301f5e.js.map",
     "592.0db8293a.chunk.js.map": "/monthsary-mini-program/static/js/592.0db8293a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.887317f5.css",
-    "static/js/main.8d778935.js"
+    "static/js/main.f5301f5e.js"
   ]
 }
