@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy 8th Anniversary 💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  background: radial-gradient(ellipse at 50% 40%, #2d0010 0%, #0d0004 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: #fff;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* ── Floating particles ── */
+.particle {
+  position: fixed;
+  pointer-events: none;
+  animation: rise linear infinite;
+  opacity: 0;
+  z-index: 0;
+}
+@keyframes rise {
+  0%   { transform: translateY(105vh) rotate(0deg);  opacity: 0;   }
+  8%   { opacity: .45; }
+  90%  { opacity: .25; }
+  100% { transform: translateY(-8vh) rotate(720deg); opacity: 0;   }
+}
+
+/* ── Scenes ── */
+.scene {
+  position: fixed; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 24px;
+  transition: opacity .65s ease, transform .65s ease;
+  z-index: 10;
+}
+.scene.out  { opacity: 0; transform: scale(.91); pointer-events: none; }
+.scene.gone { display: none !important; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================
+   SCENE 1 — Envelope
+========================================= */
+.hint {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(1rem, 4.5vw, 1.55rem);
+  color: #ffb3c6;
+  text-shadow: 0 0 18px rgba(255,100,140,.6);
+  margin-bottom: 30px;
+  animation: breathe 3s ease-in-out infinite;
+  text-align: center;
+  letter-spacing: .5px;
+  transition: opacity .5s;
+}
+.hint.hide { opacity: 0 !important; animation: none !important; }
+
+@keyframes breathe {
+  0%,100% { opacity: .6; }
+  50%      { opacity: 1;  }
+}
+
+/* Envelope wrapper */
+.env-outer {
+  --ew: clamp(240px, 72vw, 320px);
+  --eh: calc(var(--ew) * .68);
+  position: relative;
+  width: var(--ew);
+  height: var(--eh);
+  perspective: 700px;
+  cursor: pointer;
+  filter: drop-shadow(0 16px 32px rgba(180,0,30,.65));
+  transition: filter .3s, transform .3s, opacity .5s;
+}
+.env-outer:hover:not(.opening) {
+  transform: translateY(-7px) scale(1.03);
+  filter: drop-shadow(0 28px 46px rgba(180,0,30,.85));
+}
+.env-outer.hide { opacity: 0; pointer-events: none; }
+
+/* Envelope body */
+.env-body {
+  position: absolute; inset: 0;
+  background: #d42020;
+  border-radius: 5px;
+  z-index: 1;
+}
+.env-body::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0; height: 58%;
+  background: #be1a1a;
+  clip-path: polygon(0 100%, 50% 0%, 100% 100%);
+  border-radius: 0 0 5px 5px;
+}
+.env-fold-l {
+  position: absolute; inset: 0; z-index: 2;
+  clip-path: polygon(0 0, 51% 50%, 0 100%);
+  background: rgba(0,0,0,.09);
+  pointer-events: none;
+}
+.env-fold-r {
+  position: absolute; inset: 0; z-index: 2;
+  clip-path: polygon(100% 0, 49% 50%, 100% 100%);
+  background: rgba(0,0,0,.13);
+  pointer-events: none;
+}
+.env-border {
+  position: absolute; inset: 0;
+  border: 2px solid rgba(212,165,32,.35);
+  border-radius: 5px;
+  z-index: 6; pointer-events: none;
+}
+
+/* Top flap */
+.env-flap {
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 55%;
+  transform-origin: 50% 0%;
+  z-index: 5;
+  transition: transform .95s cubic-bezier(.4,0,.2,1);
+}
+.env-flap-face {
+  width: 100%; height: 100%;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  background: linear-gradient(155deg, #e83535 0%, #c81c1c 55%, #a81010 100%);
+  position: relative;
+}
+.env-flap-face::after {
+  content: '';
+  position: absolute; inset: 0;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  background: linear-gradient(180deg, rgba(255,255,255,.18) 0%, transparent 55%);
+}
+.env-outer.opening .env-flap {
+  transform: rotateX(-180deg);
+}
+
+/* Gold seal — font-size set in proportion to envelope width */
+.env-seal {
+  position: absolute;
+  width: 22%; aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #f5c840, #d4a520, #9a7510);
+  box-shadow: 0 0 0 3px rgba(212,165,32,.4), 0 4px 14px rgba(0,0,0,.4);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 7;
+  display: flex; align-items: center; justify-content: center;
+  /* font-size = ~75% of the seal's diameter so the heart fills it */
+  font-size: calc(var(--ew) * 0.155);
+}
+.env-seal::after {
+  content: '❤';
+  color: #b01010;
+  text-shadow: 0 1px 3px rgba(0,0,0,.3);
+  line-height: 1;
+  display: block;
+}
+
+/* Centered GIF shown after opening */
+#gif-overlay {
+  display: none;      /* hidden by default — JS shows it */
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  animation: fadeUp .7s ease both;
+}
+#gif-overlay img, #gif-overlay canvas {
+  max-width: min(82vw, 420px);
+  width: min(82vw, 420px);
+  border-radius: 14px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.6);
+  display: block;
+}
+.gif-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  opacity: 0;
+  transition: opacity .5s;
+}
+.replay-btn {
+  background: transparent;
+  color: rgba(255,190,210,.55);
+  border: 1px solid rgba(255,140,165,.2);
+  padding: 7px 18px;
+  border-radius: 20px;
+  font-family: 'Dancing Script', cursive;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color .2s, border-color .2s;
+}
+.replay-btn:hover {
+  color: rgba(255,190,210,.9);
+  border-color: rgba(255,140,165,.5);
+}
+
+/* Continue button */
+.cont-btn {
+  background: linear-gradient(135deg, #c8102e, #8b0000);
+  color: #fff;
+  border: 2px solid #d4a520;
+  padding: 11px 44px;
+  border-radius: 30px;
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.25rem;
+  cursor: pointer;
+  box-shadow: 0 5px 20px rgba(200,0,30,.45);
+  letter-spacing: .8px;
+  transition: transform .2s, box-shadow .2s;
+  opacity: 0;  /* JS triggers the animation */
+}
+.cont-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 12px 30px rgba(200,0,30,.65);
+}
+
+/* =========================================
+   SCENE 2 — The Question
+========================================= */
+.q-title {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(1.2rem, 4.8vw, 2rem);
+  color: #ffb3c6;
+  text-shadow: 0 0 22px rgba(255,100,130,.5);
+  max-width: 460px;
+  line-height: 1.55;
+  text-align: center;
+  animation: fadeUp .6s ease both;
+}
+.q-sub {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: rgba(255,180,200,.5);
+  font-size: clamp(.75rem, 2.4vw, .92rem);
+  margin-top: 8px;
+  animation: fadeUp .6s .2s ease both;
+  opacity: 0;
+}
+.q-btns {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  margin-top: 26px;
+  animation: fadeUp .6s .4s ease both;
+  opacity: 0;
+}
+.yes-btn {
+  background: linear-gradient(135deg, #c8102e, #8b0000);
+  color: #fff;
+  border: 2px solid #d4a520;
+  padding: 13px 52px;
+  border-radius: 30px;
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.45rem;
+  cursor: pointer;
+  letter-spacing: .8px;
+  box-shadow: 0 5px 20px rgba(200,0,30,.5);
+  transition: transform .2s, box-shadow .2s;
+}
+.yes-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 12px 30px rgba(200,0,30,.7);
+}
+/* NO button — lives in normal flow until first interaction, then goes fixed */
+.no-btn {
+  background: rgba(255,255,255,.16);
+  color: rgba(255,205,220,.95);
+  border: 1px solid rgba(255,140,165,.55);
+  padding: 9px 22px;
+  border-radius: 18px;
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.1rem;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(0,0,0,.35);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* =========================================
+   SCENE 3 — Finale
+========================================= */
+.fin-title {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(1.5rem, 5.5vw, 2.5rem);
+  color: #ffb3c6;
+  text-shadow: 0 0 22px rgba(255,100,130,.6);
+  text-align: center;
+  line-height: 1.35;
+  animation: fadeUp .6s ease both;
+}
+.fin-gif {
+  max-width: clamp(170px, 62vw, 290px);
+  border-radius: 16px;
+  box-shadow: 0 16px 40px rgba(0,0,0,.6);
+  margin-top: 20px;
+  display: block;
+  animation: fadeUp .6s .3s ease both;
+  opacity: 0;
+}
+.fin-sub {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: rgba(255,180,200,.7);
+  font-size: clamp(.85rem, 2.4vw, 1.03rem);
+  margin-top: 16px;
+  animation: fadeUp .6s .65s ease both;
+  opacity: 0;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+
+<div id="ptcls" aria-hidden="true"></div>
+
+<!-- ===== SCENE 1: Envelope ===== -->
+<div class="scene" id="s1">
+  <p class="hint" id="hint">💌 Smile Before You Open 💌</p>
+
+  <div class="env-outer" id="envelope" role="button" tabindex="0" aria-label="Open the envelope">
+    <div class="env-body">
+      <div class="env-fold-l"></div>
+      <div class="env-fold-r"></div>
+      <div class="env-border"></div>
+    </div>
+    <div class="env-flap">
+      <div class="env-flap-face"></div>
+    </div>
+    <div class="env-seal"></div>
+  </div>
+
+  <!-- Hidden until envelope opens -->
+  <div id="gif-overlay">
+    <img id="anniv-gif" src="assets/anniversary-once.gif" alt="Our Anniversary">
+    <div class="gif-controls" id="gif-controls">
+      <button class="replay-btn" id="replay-btn">↺ Replay</button>
+      <button class="cont-btn" id="cont-btn">Continue ✨</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SCENE 2: The Question ===== -->
+<div class="scene gone" id="s2">
+  <p class="q-title">Do you still want to continue your subscription with your bibi? 💕</p>
+  <p class="q-sub">Think carefully now~</p>
+  <div class="q-btns">
+    <button class="yes-btn" id="yes-btn">Yes! 💖</button>
+    <button class="no-btn" id="no-btn">No</button>
+  </div>
+</div>
+
+<!-- ===== SCENE 3: Finale ===== -->
+<div class="scene gone" id="s3">
+  <p class="fin-title">Of course you do! 🥰<br>Happy 8th Anniversary, bibi!</p>
+  <img src="assets/minion-mwa.gif" class="fin-gif" alt="Mwah!">
+  <p class="fin-sub">Here's to forever with you 💕✨</p>
+</div>
+
+<script>
+(function () {
+
+  /* ── Particles ── */
+  const ptcls = document.getElementById('ptcls');
+  ['💕','❤️','🌸','✨','💗','💖','🌹'].forEach(em => {
+    for (let i = 0; i < 3; i++) {
+      const el = document.createElement('span');
+      el.className = 'particle';
+      el.textContent = em;
+      el.style.cssText =
+        `left:${Math.random()*100}%;` +
+        `font-size:${.7+Math.random()*1.3}rem;` +
+        `animation-duration:${7+Math.random()*11}s;` +
+        `animation-delay:${Math.random()*10}s;`;
+      ptcls.appendChild(el);
+    }
+  });
+
+  /* ── Envelope ── */
+  const env        = document.getElementById('envelope');
+  const hint       = document.getElementById('hint');
+  const gifOverlay = document.getElementById('gif-overlay');
+  const cBtn       = document.getElementById('cont-btn');
+  let opened = false;
+
+  function openEnvelope() {
+    if (opened) return;
+    opened = true;
+    env.removeAttribute('role');
+    env.removeAttribute('tabindex');
+    env.style.cursor = 'default';
+    env.classList.add('opening');
+
+    // Fade out envelope + hint
+    setTimeout(() => {
+      env.classList.add('hide');
+      hint.classList.add('hide');
+    }, 1100);
+
+    // Show centered GIF — fully remove envelope + hint from layout so the
+    // GIF is the only flex child and centers perfectly in the scene
+    setTimeout(() => {
+      env.style.display  = 'none';
+      hint.style.display = 'none';
+      gifOverlay.style.display = 'flex';
+      startGifControl();
+    }, 1700);
+  }
+
+  env.addEventListener('click',   openEnvelope);
+  env.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openEnvelope(); }
+  });
+
+  /* ── Scene transitions ── */
+  function switchScene(fromId, toId) {
+    const from = document.getElementById(fromId);
+    const to   = document.getElementById(toId);
+    from.classList.add('out');
+    setTimeout(() => {
+      from.classList.add('gone');
+      from.classList.remove('out');
+      to.classList.remove('gone');
+    }, 680);
+  }
+
+  /* ── GIF one-shot control ──
+     The GIF file itself (anniversary-once.gif) has had its looping block
+     stripped on disk, so the browser plays it through exactly once and then
+     holds the final frame natively — no canvas tricks, works on file:// too.
+     We only need to (a) restart it from frame 0 when the overlay appears and
+     (b) reveal the Continue button once that single play has finished. */
+  const gifImg      = document.getElementById('anniv-gif');
+  const gifControls = document.getElementById('gif-controls');
+  const replayBtn   = document.getElementById('replay-btn');
+  const GIF_DURATION = 11160;            // one full play (124 frames), measured
+  const GIF_SRC      = gifImg.getAttribute('src');
+  let   revealTimer  = null;
+
+  function revealControls() {
+    gifControls.style.opacity = '1';
+    void cBtn.offsetWidth;
+    cBtn.style.animation = 'fadeUp .6s ease forwards';
+  }
+
+  function playOnce() {
+    clearTimeout(revealTimer);
+    gifControls.style.opacity = '0';
+    cBtn.style.animation = 'none';
+    cBtn.style.opacity   = '0';
+    // Force a fresh load so the animation always starts at frame 0
+    gifImg.onload = () => {
+      revealTimer = setTimeout(revealControls, GIF_DURATION + 250);
+    };
+    gifImg.src = '';
+    requestAnimationFrame(() => { gifImg.src = GIF_SRC; });
+  }
+
+  function startGifControl() { playOnce(); }
+
+  replayBtn.addEventListener('click', playOnce);
+  cBtn.addEventListener('click', () => switchScene('s1', 's2'));
+
+  /* ── YES / NO ── */
+  const yesBtn = document.getElementById('yes-btn');
+  const noBtn  = document.getElementById('no-btn');
+  let noFloating = false;
+  let noOrigin = null;        // centre when it first fled
+  let noX = 0, noY = 0;       // current centre, tracked in JS (never read back)
+
+  // Move the button so its CENTRE sits at (cx,cy), clamped on-screen.
+  function placeNo(cx, cy) {
+    const btnW = noBtn.offsetWidth  || 70;
+    const btnH = noBtn.offsetHeight || 38;
+    const pad  = 14;
+    cx = Math.max(pad + btnW / 2, Math.min(window.innerWidth  - pad - btnW / 2, cx));
+    cy = Math.max(pad + btnH / 2, Math.min(window.innerHeight - pad - btnH / 2, cy));
+    noX = cx; noY = cy;
+    noBtn.style.left = (cx - btnW / 2) + 'px';
+    noBtn.style.top  = (cy - btnH / 2) + 'px';
+  }
+
+  // First interaction: pin NO where it sits as a fixed element. Every
+  // interaction after that it darts AWAY from the pointer but stays leashed
+  // near its starting spot — so it always remains on-screen and visible.
+  function flee(e) {
+    if (e) e.stopPropagation();
+
+    if (!noFloating) {
+      const r = noBtn.getBoundingClientRect();
+      // Reparent to <body>: an ancestor (.q-btns) keeps a non-none transform
+      // from its fadeUp animation, which would otherwise become the containing
+      // block for position:fixed and break viewport-relative coordinates.
+      document.body.appendChild(noBtn);
+      noBtn.style.position = 'fixed';
+      noBtn.style.zIndex   = '200';
+      noBtn.style.margin   = '0';
+      noBtn.style.top      = r.top  + 'px';
+      noBtn.style.left     = r.left + 'px';
+      noX = r.left + r.width  / 2;
+      noY = r.top  + r.height / 2;
+      noOrigin = { x: noX, y: noY };
+      void noBtn.offsetWidth;            // reflow before adding the transition
+      noBtn.style.transition = 'top .22s ease, left .22s ease';
+      noFloating = true;
+    }
+
+    // Pointer position (mouse or touch); fall back to just below the button
+    let px = noX, py = noY + 60;
+    if (e && e.touches && e.touches[0])          { px = e.touches[0].clientX; py = e.touches[0].clientY; }
+    else if (e && typeof e.clientX === 'number') { px = e.clientX;            py = e.clientY; }
+
+    // Vector pointing away from the pointer (random if it lands dead-centre)
+    let dx = noX - px, dy = noY - py;
+    if (dx === 0 && dy === 0) { const a = Math.random() * Math.PI * 2; dx = Math.cos(a); dy = Math.sin(a); }
+    const len = Math.hypot(dx, dy) || 1;
+    const hop = 90;
+    let cx = noX + (dx / len) * hop;
+    let cy = noY + (dy / len) * hop;
+
+    // Leash it within ~130px of its original spot so it stays nearby
+    const R = 130;
+    const ox = cx - noOrigin.x, oy = cy - noOrigin.y, od = Math.hypot(ox, oy);
+    if (od > R) { cx = noOrigin.x + (ox / od) * R; cy = noOrigin.y + (oy / od) * R; }
+
+    placeNo(cx, cy);
+  }
+
+  noBtn.addEventListener('mouseenter',  flee);
+  noBtn.addEventListener('click',       flee);
+  noBtn.addEventListener('touchstart',  e => { e.preventDefault(); flee(e); }, { passive: false });
+
+  yesBtn.addEventListener('click', () => {
+    noBtn.style.display = 'none';   // it now lives on <body>, so hide it explicitly
+    switchScene('s2', 's3');
+  });
+
+})();
+</script>
+</body>
+</html>
